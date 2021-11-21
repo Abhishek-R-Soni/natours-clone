@@ -4,8 +4,14 @@ const router = express.Router()
 
 router
     .route('/')
-    .get(tourController.getTour)
+    .get(tourController.getAllTour)
     .post(tourController.createTour)
+    .patch(tourController.updateTour)
+    .delete(tourController.deleteTour)
+
+router
+    .route('/:id')
+    .get(tourController.getTour)
     .patch(tourController.updateTour)
     .delete(tourController.deleteTour)
 

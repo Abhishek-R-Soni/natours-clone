@@ -3,11 +3,13 @@ const tourController = require('../controllers/tourController')
 const router = express.Router()
 
 router
+    .route('/top-5-cheap')
+    .get(tourController.getTopToursAlias, tourController.getAllTour)
+
+router
     .route('/')
     .get(tourController.getAllTour)
     .post(tourController.createTour)
-    .patch(tourController.updateTour)
-    .delete(tourController.deleteTour)
 
 router
     .route('/:id')

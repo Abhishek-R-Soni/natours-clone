@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+// const User = require('../models/userModel')
 
 const tourSchema = mongoose.Schema({
+    _id: String,
     name: {
         type: String,
         required: [true, 'A tour must require name'],
@@ -45,8 +47,7 @@ const tourSchema = mongoose.Schema({
         required: [true, 'A tour must must need description']
     },
     imageCover: {
-        type: String,
-        required: [true, 'A tour must must need cover image']
+        type: String
     },
     images: [String],
     createdAt: {
@@ -54,9 +55,72 @@ const tourSchema = mongoose.Schema({
         default: Date.now(),
         select: false
     },
-    startDates: [Date]
+    startDates: [Date],
+    secretTour : {
+        type: Boolean,
+        default: false
+    },
+    startLocation: {
+        type: {
+            type: String,
+            default: "Point",
+            enum :["Point"]
+        },
+        coordinates: [Number],
+        address: String,
+        description: String
+    },
+    locations: [
+        {
+            type: {
+                type: String,
+                default: "Point",
+                enum :["Point"]
+            },
+            coordinates: [Number],
+            address: String,
+            description: String,
+            day: Number
+        }
+    ],
+    guides: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: 'User'
+        }
+    ],
+},
+{
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+}
+)
+
+// To populate guides data
+tourSchema.pre(/^find/, function(next){
+    this.populate('guides')
+    next()
 })
 
-const tour = mongoose.model('Tour', tourSchema)
+// To get guides information
+// tourSchema.pre('save', async function(next){
+//     try{
+//         const guidePromises = this.guides.map(async id => await User.findById(id));
+//         this.guides = await Promise.all(guidePromises);
+//         next();
+//     }
+//     catch(err){
+//         res.json(err)
+//     }
+// });
 
-module.exports = tour
+//  Virtual populate of reviews field
+tourSchema.virtual('reviews', {
+    ref: 'Review',
+    foreignField: 'tour',
+    localField: '_id'
+});
+
+const Tour = mongoose.model('Tour', tourSchema)
+
+module.exports = Tour;

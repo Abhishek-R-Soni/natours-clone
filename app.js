@@ -7,6 +7,7 @@ const xss = require('xss-clean')
 
 const tourRouter = require('./routs/tourRoutes')
 const userRouter = require('./routs/userRoutes')
+const reviewRouter = require('./routs/reviewRoutes')
 
 const app = express()
 app.use(express.json())
@@ -37,5 +38,11 @@ mongoose.connect(process.env.DATABASE_LOCAL, {
 
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
+app.use('/api/v1/reviews', reviewRouter)
 
+app.all('*', (req, res, next) => {
+    res.status(401).json({
+        message: `Can't find ${req.originalUrl} on this server`
+    })
+})
 module.exports = app;

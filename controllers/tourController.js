@@ -1,4 +1,3 @@
-const { json } = require("express");
 const Tour = require('../models/tourModel');
 const APIFeatures = require('../utils/apiFeatures');
 
@@ -35,7 +34,7 @@ exports.getAllTour = async (req, res) => {
 
 exports.getTour = async (req, res) => {
     try{
-        const tour = await Tour.findById(req.params.id);
+        const tour = await Tour.findById(req.params.id).populate('reviews');
         res.status(200).json({
             status: "success",
             data: tour

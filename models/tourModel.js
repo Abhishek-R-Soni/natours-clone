@@ -121,6 +121,9 @@ tourSchema.virtual('reviews', {
     localField: '_id'
 });
 
+// indexing price field
+tourSchema.index({price: -1}) // 1 for asc && -1 for desc
+
 const Tour = mongoose.model('Tour', tourSchema)
 
 module.exports = Tour;

@@ -3,7 +3,6 @@ const Review = require('../models/reviewModel');
 exports.getAllReview = async (req, res) => {
     try{
         filter = req.params.tourId ? {tour: req.params.tourId} : {}
-        console.log('filter :', filter)
         const reviews = await Review.find(filter);
     
         res.status(200).json({
@@ -38,4 +37,12 @@ exports.createReview = async (req, res) => {
             message: "err"
         })
     }
+};
+
+exports.updateReview = async (req, res) => {
+
+};
+
+exports.deleteReview = async (req, res) => {
+
 };

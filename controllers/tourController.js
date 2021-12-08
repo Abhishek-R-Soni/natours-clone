@@ -18,6 +18,9 @@ exports.getAllTour = async (req, res) => {
 
         const tours = await features.query;
 
+        // to get detail information of query
+        // const tours = await features.query.explain();
+
         res.status(200).json({
             status: "success",
             total: tours.length,

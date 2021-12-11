@@ -7,9 +7,11 @@ const xss = require('xss-clean')
 
 const tourRouter = require('./routs/tourRoutes')
 const userRouter = require('./routs/userRoutes')
-const reviewRouter = require('./routs/reviewRoutes')
+const reviewRouter = require('./routs/reviewRoutes');
+const compression = require('compression');
 
 const app = express()
+app.enable('trust proxy')
 app.use(express.json())
 app.use(helmet());
 
@@ -30,6 +32,9 @@ app.use(mongoSanitize());
 
 // Date sanitization against XSS (Ex. HTML + JS code in name field)
 app.use(xss())
+
+// compression
+app.use(compression())
 
 mongoose.connect(process.env.DATABASE_LOCAL, {
     useNewUrlParser: true,

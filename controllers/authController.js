@@ -8,12 +8,13 @@ const signToken = (id) => {
     })
 };
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
     const token = signToken(user._id)
-
+    console.log('in', req.secure)
     const cookieOptions = {
         expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE_IN * 24 * 60 * 60 * 1000 ), //  expires in 1d
-        httpOnly: true
+        httpOnly: true,
+        secure: req.secure
     }
 
     res.cookie('jwt', token, cookieOptions)
@@ -64,7 +65,7 @@ exports.login = async (req, res, next) => {
         if(!user || !(await user.correctPassword(password, user.password))) return res.status(400).json({message: 'Incorrect email or password!'})
        
         // 3. if everything is ok. send token
-        createSendToken(user, 200, res);
+        createSendToken(user, 200, req, res);
     }
     catch(err){
         res.status(400).json({

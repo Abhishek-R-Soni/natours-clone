@@ -1,0 +1,10 @@
+fileignoreconfig:
+- filename: package-lock.json
+  checksum: 077cabf6274dd2ad69ec31e8d9cb48f046f1d166dfe67688c02d84088e5887dc
+- filename: controllers/authController.js
+  checksum: 62cc98b746b090c11137ae0b13275457f229541e0f66c271a66ba0b94baf0210
+- filename: models/userModel.js
+  checksum: 99c6a90ece54e6d0aa728a924984516433d095b7b42969598e177d54f69a4018
+- filename: utils/email.js
+  checksum: deb5de43ebd4367c727078d99e01e5184b43d55f03429d0cd05fdb51744d9c74
+version: ""

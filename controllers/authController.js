@@ -1,6 +1,7 @@
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 const {promisify} = require('util')
+const Email = require('../utils/email');
 
 const signToken = (id) => {
     return jwt.sign({id}, process.env.JWT_TOKEN_SECRET, {
@@ -8,7 +9,7 @@ const signToken = (id) => {
     })
 };
 
-const createSendToken = (user, statusCode, req, res) => {
+const createSendToken = async (user, statusCode, req, res) => {
     const token = signToken(user._id)
     console.log('in', req.secure)
     const cookieOptions = {
@@ -38,14 +39,14 @@ exports.signup = async (req, res, next) => {
             email: req.body.email,
             password: req.body.password,
             passwordConfirm: req.body.passwordConfirm,
-            passwordChangeAt: req.body.passwordChangeAt
-        })
-        
+            // passwordChangeAt: req.body.passwordChangeAt
+        });
+
         createSendToken(newUser, 201, res);
     }
     catch(err){
         res.status(400).json({
-            status: "failed",
+            status: "failed haha",
             message: err
         })
     }
@@ -66,6 +67,10 @@ exports.login = async (req, res, next) => {
        
         // 3. if everything is ok. send token
         createSendToken(user, 200, req, res);
+
+        console.log('at end')
+        // send welcome email
+        await new Email(user).sendEmail();
     }
     catch(err){
         res.status(400).json({
